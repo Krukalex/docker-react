@@ -15,3 +15,17 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t krukalex/react-test -f Dockerfile.dev .
       - run: docker run -e CI=true krukalex/react-test npm test
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*git*'
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          application_name: frontend
+          environment_name: Frontend-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-545746120737
+          region: us-east-1
+          version_label: ${{ github.sha }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
