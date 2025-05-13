@@ -27,5 +27,6 @@ jobs:
           existing_bucket_name: elasticbeanstalk-us-east-1-545746120737
           region: us-east-1
           version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
